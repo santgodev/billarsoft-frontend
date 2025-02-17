@@ -1,0 +1,69 @@
+@if (data['templateName'] == "create" || data['templateName'] == "update") {
+<ng-container *ngTemplateOutlet="createUpdateTemplate"></ng-container>
+} @else if (data['templateName'] == "delete") {
+<ng-container *ngTemplateOutlet="deleteTemplate"></ng-container>
+}
+
+<!-- Template para crear y actualizar usuario -->
+<ng-template #createUpdateTemplate>
+
+    <h2 mat-dialog-title>{{ data.userData ? 'Actualizar usuario' : 'Crear usuario' }}</h2>
+    <mat-dialog-content>
+        <form [formGroup]="form">
+            <div class="example-container">
+
+                <mat-form-field>
+                    <mat-label>Rol</mat-label>
+                    <mat-select formControlName="roleId" required  name="food">
+                        @for (rol of roles; track rol) {
+                        <mat-option  [value]="rol.id">{{rol.name}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="Nombre completo" formControlName="name" required />
+                    <mat-error *ngIf="form.get('name')?.invalid">
+                        {{ errorMessage() }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Correo</mat-label>
+                    <input matInput type="email" placeholder="Correo electrónico" formControlName="email" required />
+                    <mat-error *ngIf="form.get('email')?.invalid">
+                        {{ errorMessage() }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" placeholder="Contraseña" formControlName="password" required />
+                    <mat-error *ngIf="form.get('password')?.invalid">
+                        {{ errorMessage() }}
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close cdkFocusInitial>Cancelar</button>
+        <button mat-button [mat-dialog-close]="true" *ngIf="!data.userData" [disabled]="form.invalid"
+            (click)="createUser()">Crear Usuario</button>
+        <button mat-button [mat-dialog-close]="true" *ngIf="data.userData" (click)="updateUser()">Actualizar
+            Usuario</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<!-- Template para eliminar usuario -->
+<ng-template #deleteTemplate>
+    <h2 mat-dialog-title>Eliminar Usuario</h2>
+    <mat-dialog-content>¿Está seguro de eliminar este usuario?</mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancelar</button>
+        <button mat-button [mat-dialog-close]="true" color="warn" (click)="deleteUser()"
+            cdkFocusInitial>Eliminar</button>
+    </mat-dialog-actions>
+</ng-template>

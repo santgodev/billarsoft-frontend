@@ -1,0 +1,55 @@
+@if (data['templateName'] == "create" ) {
+    <ng-container *ngTemplateOutlet="createTemplate"></ng-container>
+
+}
+@else if (data['templateName']  == "update" ) {
+    <ng-container *ngTemplateOutlet="createTemplate"></ng-container>
+
+}
+@else if (data['templateName'] == "delete" ) {
+    <ng-container *ngTemplateOutlet="deleteTemplate"></ng-container>
+
+}
+
+<ng-template #createTemplate>
+    <h2 mat-dialog-title>Crear rol</h2>
+    <mat-dialog-content>
+        <form [formGroup]="form">
+            <div class="example-container">
+            
+              <mat-form-field>
+                <mat-label>Rol</mat-label>
+                <input matInput placeholder="Nombre del rol" formControlName="name" required />
+                <mat-error *ngIf="form.get('name')?.invalid">
+                  {{ errorMessage() }}
+                </mat-error>
+              </mat-form-field>
+        
+              <mat-form-field>
+                <mat-label>Descripcion</mat-label>
+                <input matInput placeholder="Descripcion" formControlName="description" required />
+                <mat-error *ngIf="form.get('description')?.invalid">
+                  {{ errorMessage() }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close cdkFocusInitial>Cancelar</button>
+        <button mat-button [mat-dialog-close]="true" *ngIf="!data.roleData"  [disabled]="form.invalid" (click)="createRole()">Crear rol</button>
+        <button mat-button [mat-dialog-close]="true"  *ngIf="data.roleData" (click)="updateRole()">Actualizar rol</button>
+    </mat-dialog-actions>
+</ng-template>
+
+
+<ng-template #deleteTemplate>
+    <h2 mat-dialog-title>Eliminar rol</h2>
+    <mat-dialog-content>Esta seguro de eliminar este rol</mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button [mat-dialog-close]="true" color="warn" (click)="deleteRole()" cdkFocusInitial>Eliminar</button>
+    </mat-dialog-actions>
+</ng-template>
+
+

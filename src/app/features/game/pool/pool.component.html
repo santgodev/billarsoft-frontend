@@ -1,0 +1,7 @@
+<div class="container">
+    <div
+      *ngFor="let table of tables" class="pool-table" (click)="onTableClick(table.id)">
+      Mesa {{ table.id }} 
+    </div>
+  </div>
+  

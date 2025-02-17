@@ -1,0 +1,153 @@
+<div class="container">
+  <mat-card appearance="outlined">
+
+    <mat-card-content>
+      <div class="header">
+        <h6>Seleccione un rol</h6>
+        <mat-form-field>
+          <mat-label>Roles</mat-label>
+          <mat-select>
+            @for (role of rolesSelect; track role) {
+            <mat-option (click)="listPermissionsWithRoleId(role.id!)" [value]="role.name">{{ role.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <br>
+
+      <button mat-stroked-button *ngIf="conditionalForShowAddModules"(click)="listModulesWhereRoleIdNot(formAddModules)">
+      Agregar modulos</button>
+
+      <section class="example-container mat-elevation-z8" tabindex="0">
+        <ng-container [formGroup]="form">
+
+          <table mat-table [dataSource]="dataSource" formArrayName="permissionsArray">
+
+            <ng-container matColumnDef="moduleName">
+              <th mat-header-cell *matHeaderCellDef> Modulo </th>
+              <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i"> {{element.moduleName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="list">
+              <th mat-header-cell *matHeaderCellDef> Listar </th>
+              <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                <mat-slide-toggle color="accent" formControlName="list"></mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="insert">
+              <th mat-header-cell *matHeaderCellDef> Crear </th>
+              <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                <mat-slide-toggle formControlName="insert"></mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="update">
+              <th mat-header-cell *matHeaderCellDef> Actualizar </th>
+              <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                <mat-slide-toggle formControlName="update"></mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+              <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+              <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                <mat-slide-toggle formControlName="delete"></mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="saveRow">
+              <th mat-header-cell *matHeaderCellDef> Editar / Eliminar</th>
+              <td mat-cell *matCellDef="let element; let i = index">
+                <button mat-icon-button color="accent" (click)="openFormEditPermissions(formEditPermissionsTemplate, i, element.moduleName)">
+                  <mat-icon>check</mat-icon>
+                </button>
+                <button mat-icon-button class="red-button" (click)="openDeleteDialog(formDeletePermissionsTemplate, i, element.moduleName)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+             
+            </ng-container> 
+            
+        
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+        </ng-container>
+
+      </section>
+
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #formEditPermissionsTemplate>
+  <h2 mat-dialog-title>Editar permisos del modulo <b>{{": "+moduleName}}</b> </h2>
+  <mat-dialog-content>¿Esta seguro de editar los permisos de este modulo asociado a este rol?</mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" color="primary" (click)="editPermissionsRow()">Editar</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #formDeletePermissionsTemplate>
+  <h2 mat-dialog-title>Eliminar permisos del modulo <b>{{": "+moduleName}}</b> </h2>
+  <mat-dialog-content>¿Está seguro de eliminar los permisos de este módulo asociado a este rol?</mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" color="warn" (click)="deletePermissionsRow()">Eliminar</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #formAddModules>
+  <mat-dialog-content>
+    <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8">
+
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+    
+   
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Modulo </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+    
+      
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns2;"
+          (click)="selection.toggle(row)">
+      </tr>
+    </table>
+  </mat-dialog-content> 
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close >Cancel</button>
+    <button mat-stroked-button cdkFocusInitial mat-dialog-closey  (click)="insertPermissionsList()">Agregar modulos</button>
+
+  </mat-dialog-actions>
+
+
+
+
+</ng-template>

@@ -1,0 +1,106 @@
+.logoContainer {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+mat-divider {
+    width: 80%;
+    justify-self: center;
+}
+
+.sidenav-background {
+    z-index: 1000;
+}
+
+.mat-sidenav-content {
+    z-index: 2;
+}
+
+.sidenav-background,
+.toolbar .card,
+.footer,
+.toolbar {
+    background-color: #547ea4;
+    color: rgb(234, 225, 225);
+
+}
+
+
+
+
+.toolbar button,
+.toolbar h2 {
+    color: rgb(249, 243, 243);
+    border-radius: 5%;
+
+}
+
+.footer {
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 0;
+    z-index: 2;
+    padding-left: 1%;
+
+}
+
+.logo {
+    height: 50px;
+    max-width: 100%;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.mat-sidenav-content {
+    background-color: rgba(241, 235, 235, 0.1);
+}
+
+.footer {
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.toolbar .card {
+    background-color: #4d6f8f;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 10px;
+    padding-right: 2%;
+    border-radius: 10px;
+
+}
+
+.toolbar {
+    border-radius: 15px;
+    margin: 2px;
+
+
+}
+
+mat-nav-list a {
+    color: rgb(230, 225, 225);
+
+}
+
+
+mat-expansion-panel {
+    background-color: #547ea4;
+}
+
+mat-panel-title {
+    color: #e6e5f2;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+mat-sidenav-content .main-content {
+    min-height: 100vh;
+    flex: 1;
+}
